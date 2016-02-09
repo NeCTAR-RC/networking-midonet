@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+export OSLO_PACKAGE_VERSION=$(shell dpkg-parsechangelog | sed -n -e 's/^Version: //p')
+
+%:
+	dh $@ --with python2 --buildsystem=python_distutils
+
+override_dh_clean:
+	dh_clean
+	rm -rf doc/build
+	find . -iname '*.pyc' -delete
+	rm -f run_tests.err.log
+	rm -rf .eggs/
+	rm -f debian/*.init debian/*.service debian/*.upstart
