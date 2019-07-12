@@ -518,14 +518,14 @@ class GwDeviceDbMixin(gw_device_ext.GwDevicePluginBase):
                 resource_id=resource_id, resource_type=resource_type)
 
     @registry.receives(resources.NETWORK, [events.PRECOMMIT_DELETE])
-    def _gateway_device_callback(self, resource, event, trigger, **kwargs):
+    def _gateway_device_callback(self, resource, event, trigger, payload=None):
         if resource == resources.NETWORK:
-            resource_id = kwargs['network_id']
+            resource_id = payload.latest_state['id']
             gw_dev_type = gw_device_ext.NETWORK_VLAN_TYPE
             resource_type = 'network'
         else:
             return
-        context = kwargs.get('context')
+        context = payload.context
         if self._get_gateway_device_from_resource(context,
                                                   gw_dev_type,
                                                   resource_id):
