@@ -35,8 +35,8 @@ class MidonetSecurityGroupsHandler(object):
     # (bug 1694699)
     @registry.receives(resources.SECURITY_GROUP, [events.AFTER_CREATE])
     @log_helpers.log_method_call
-    def create_security_group(self, resource, event, trigger, **kwargs):
-        sg = kwargs.get('security_group')
+    def create_security_group(self, resource, event, trigger, payload=None):
+        sg = payload.desired_state or payload.latest_state
         try:
             self.client.create_security_group_postcommit(sg)
         except Exception as ex:
@@ -52,13 +52,13 @@ class MidonetSecurityGroupsHandler(object):
 
     @registry.receives(resources.SECURITY_GROUP, [events.AFTER_UPDATE])
     @log_helpers.log_method_call
-    def update_security_group(self, resource, event, trigger, **kwargs):
+    def update_security_group(self, resource, event, trigger, payload=None):
         pass
 
     @registry.receives(resources.SECURITY_GROUP, [events.AFTER_DELETE])
     @log_helpers.log_method_call
-    def delete_security_group(self, resource, event, trigger, **kwargs):
-        sg_id = kwargs.get('security_group_id')
+    def delete_security_group(self, resource, event, trigger, payload=None):
+        sg_id = payload.resource_id
         try:
             self.client.delete_security_group_postcommit(sg_id)
         except Exception as ex:
