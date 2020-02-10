@@ -22,7 +22,7 @@ Architecture: all
 Depends: ${misc:Depends},
          python3:any (>= 3.6),
          python3-neutron (>= 2:14.0.0),
-         python3-oslo-log (>= 3.42.0),
+         python3-oslo.log (>= 3.42.0),
          python3-babel,
          python3-midonetclient
 Description: MidoNet Neutron Plugin
