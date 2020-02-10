@@ -7,19 +7,23 @@ Homepage: http://github.com/openstack/networking-midonet
 Build-Depends: dh-python,
                openstack-pkg-tools,
                debhelper (>=9),
-               python-dev,
-               python-setuptools
+               python3-dev,
+               python3-setuptools,
+               python3-pbr,
+               python3-neutron-lib,
+               python3-neutron,
+               python3-mock,
+               python3-oslotest,
+               python3-os-vif,
+               python3-networking-l2gw
 
-Package: python-networking-midonet
+Package: python3-networking-midonet
 Architecture: all
 Depends: ${misc:Depends},
-         python:any (>= 2.7.5-5~),
-         python:any (<< 2.8),
-# Liberty plugin package must work with Kilo Neutron
-         python-neutron (>= 1:2015.1),
-         python-neutron-lbaas (>= 1:2015.1),
-         python-oslo-log (>= 0.4.0),
-         python-babel,
-         python-midonetclient
+         python3:any (>= 3.6),
+         python3-neutron (>= 2:14.0.0),
+         python3-oslo-log (>= 3.42.0),
+         python3-babel,
+         python3-midonetclient
 Description: MidoNet Neutron Plugin
  This package provides MidoNet networking plugin for OpenStack Neutron
