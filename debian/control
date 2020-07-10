@@ -24,7 +24,6 @@ Depends: ${misc:Depends},
          python3-neutron (>= 2:14.0.0),
          python3-oslo.log (>= 3.42.0),
          python3-babel,
-         python3-midonetclient,
-         python3-neutron-lbaas
+         python3-midonetclient
 Description: MidoNet Neutron Plugin
  This package provides MidoNet networking plugin for OpenStack Neutron
