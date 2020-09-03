@@ -39,8 +39,7 @@ cat > /etc/apt/sources.list.d/midonet.list <<EOL
 # MidoNet
 deb $MIDONET_DEB_URI $MIDONET_DEB_SUITE $MIDONET_DEB_COMPONENT
 
-# MidoNet 3rd Party Tools and Libraries
-deb http://builds.midonet.org/misc stable main
+
 EOL
 
 curl -L https://builds.midonet.org/midorepo.key | apt-key add -
