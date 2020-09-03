@@ -30,3 +30,12 @@ function configure_neutron_midonet {
 function install_neutron_midonet {
     :
 }
+
+
+function neutron_plugin_configure_plugin_agent {
+    :
+}
+
+function neutron_plugin_configure_l3_agent {
+    :
+}

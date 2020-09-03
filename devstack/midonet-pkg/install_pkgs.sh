@@ -43,5 +43,5 @@ apt-get install -y --no-install-recommends --no-install-suggests \
     ${CASSANDRA_PKG} \
     midonet-tools \
     midonet-cluster \
-    midolman \
-    ${PYTHON_PREFIX}midonetclient
+    midolman
+#    ${PYTHON_PREFIX}midonetclient
