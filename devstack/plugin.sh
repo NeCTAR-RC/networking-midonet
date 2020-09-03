@@ -95,6 +95,9 @@ if [[ "$1" == "stack" ]]; then
 
     elif [[ "$2" == "install" ]]; then
 
+        sudo $ABSOLUTE_PATH/midonet-pkg/install_pkgs_client.sh \
+             $PYTHON_PREFIX
+
         # Build neutron midonet plugin
         pip_install --no-deps --editable $NETWORKING_MIDONET_DIR
         # Configure midonet-cli
