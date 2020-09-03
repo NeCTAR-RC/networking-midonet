@@ -84,6 +84,7 @@ if [[ "$1" == "stack" ]]; then
             ./gradlew nsdb:clean  # workaround for errors after proto changes
             install_package ruby-dev
             install_package ruby-ronn
+            install_package protobuf-compiler
             sudo gem install fpm
             ./gradlew debian
             find . -type f -name "*.deb" \
@@ -95,8 +96,10 @@ if [[ "$1" == "stack" ]]; then
 
     elif [[ "$2" == "install" ]]; then
 
-        sudo $ABSOLUTE_PATH/midonet-pkg/install_pkgs_client.sh \
-             $PYTHON_PREFIX
+	if [ "$MIDONET_USE_PACKAGE" == "True" ]; then
+            sudo $ABSOLUTE_PATH/midonet-pkg/install_pkgs_client.sh \
+		 $PYTHON_PREFIX
+	fi
 
         # Build neutron midonet plugin
         pip_install --no-deps --editable $NETWORKING_MIDONET_DIR
