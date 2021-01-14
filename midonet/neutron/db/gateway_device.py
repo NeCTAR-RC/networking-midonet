@@ -17,6 +17,7 @@ from neutron_lib.api import validators
 from neutron_lib.callbacks import events
 from neutron_lib.callbacks import registry
 from neutron_lib.callbacks import resources
+from neutron_lib.db import api as db_api
 from neutron_lib.db import model_base
 from neutron_lib.db import model_query
 from neutron_lib.db import utils as db_utils
@@ -300,7 +301,7 @@ class GwDeviceDbMixin(gw_device_ext.GwDevicePluginBase):
         """
 
         add_ips, delete_ips = [], []
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             gw_dev_db = self._get_gateway_device(context, gw_dev_id)
             if data.get('tunnel_ips'):
                 exist_ips = list(map(
@@ -389,7 +390,7 @@ class GwDeviceDbMixin(gw_device_ext.GwDevicePluginBase):
             self._validate_tunnel_ips(gw_dev.get('tunnel_ips') or [],
                                       gw_dev['type'])
 
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             gw_dev_db = GatewayDevice(
                 id=uuidutils.generate_uuid(),
                 name=gw_dev['name'],
@@ -425,7 +426,7 @@ class GwDeviceDbMixin(gw_device_ext.GwDevicePluginBase):
         rme = remote_mac_entry['remote_mac_entry']
 
         try:
-            with context.session.begin(subtransactions=True):
+            with db_api.CONTEXT_WRITER.using(context):
                 gw_rmt_db = GatewayRemoteMacTable(
                     id=uuidutils.generate_uuid(),
                     device_id=gateway_device_id,
@@ -441,13 +442,13 @@ class GwDeviceDbMixin(gw_device_ext.GwDevicePluginBase):
 
     def delete_gateway_device(self, context, id):
         gw_dev = self._ensure_gateway_device_not_in_use(context, id)
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             context.session.delete(gw_dev)
 
     def delete_gateway_device_remote_mac_entry(self, context, id,
                                                gateway_device_id):
         rmt_db = self._get_remote_mac_entry(context, id, gateway_device_id)
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             context.session.delete(rmt_db)
 
     def get_gateway_device(self, context, id, fields=None):

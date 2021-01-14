@@ -13,6 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from neutron_lib.db import api as db_api
 from oslo_config import cfg
 from oslo_log import helpers as log_helpers
 from oslo_log import log as logging
@@ -55,7 +56,7 @@ class MidonetGwDeviceServicePlugin(gateway_device_db.GwDeviceDbMixin):
     @log_helpers.log_method_call
     def create_gateway_device(self, context, gateway_device):
 
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             gw = super(MidonetGwDeviceServicePlugin,
                        self).create_gateway_device(context, gateway_device)
             self.client.create_gateway_device_precommit(context, gw)
@@ -80,7 +81,7 @@ class MidonetGwDeviceServicePlugin(gateway_device_db.GwDeviceDbMixin):
         del backup['id']
         del backup['remote_mac_entries']
         backup_body = {'gateway_device': backup}
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             gw = super(MidonetGwDeviceServicePlugin,
                        self).update_gateway_device(context, id, gateway_device)
             self.client.update_gateway_device_precommit(context, id, gw)
@@ -104,7 +105,7 @@ class MidonetGwDeviceServicePlugin(gateway_device_db.GwDeviceDbMixin):
 
     @log_helpers.log_method_call
     def delete_gateway_device(self, context, id):
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             super(MidonetGwDeviceServicePlugin,
                   self).delete_gateway_device(context, id)
             self.client.delete_gateway_device_precommit(context, id)
@@ -121,7 +122,7 @@ class MidonetGwDeviceServicePlugin(gateway_device_db.GwDeviceDbMixin):
             raise gateway_device.OperationRemoteMacEntryNotSupported(
                 type=gateway_device.NETWORK_VLAN_TYPE)
 
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             rme = super(MidonetGwDeviceServicePlugin,
                         self).create_gateway_device_remote_mac_entry(
                 context, gateway_device_id, remote_mac_entry)
@@ -137,9 +138,10 @@ class MidonetGwDeviceServicePlugin(gateway_device_db.GwDeviceDbMixin):
                           {"rme_id": rme["id"], "gw_id": gateway_device_id,
                            "err": ex})
                 try:
-                    super(MidonetGwDeviceServicePlugin,
-                          self).delete_gateway_device_remote_mac_entry(
-                        context, rme["id"], gateway_device_id)
+                    with db_api.CONTEXT_WRITER.using(context):
+                        super(MidonetGwDeviceServicePlugin,
+                              self).delete_gateway_device_remote_mac_entry(
+                            context, rme["id"], gateway_device_id)
                 except Exception:
                     LOG.exception("Failed to delete a remote mac entry %s",
                                   rme["id"])
@@ -150,7 +152,7 @@ class MidonetGwDeviceServicePlugin(gateway_device_db.GwDeviceDbMixin):
     def delete_gateway_device_remote_mac_entry(self, context, id,
                                                gateway_device_id):
         self._get_gateway_device(context, gateway_device_id)
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             super(MidonetGwDeviceServicePlugin,
                   self).delete_gateway_device_remote_mac_entry(
                 context, id, gateway_device_id)

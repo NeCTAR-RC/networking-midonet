@@ -14,6 +14,7 @@
 
 import datetime
 
+from neutron_lib.db import api as db_api
 from neutron_lib.db import model_base
 from oslo_serialization import jsonutils
 from oslo_utils import uuidutils
@@ -101,7 +102,7 @@ def task_clean(session):
 def create_task(context, type, task_id=None, data_type=None,
                 resource_id=None, data=None):
 
-    with context.session.begin(subtransactions=True):
+    with db_api.CONTEXT_WRITER.using(context):
         db = Task(id=task_id,
                   type=type,
                   tenant_id=context.tenant,
