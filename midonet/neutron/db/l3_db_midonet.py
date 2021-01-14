@@ -24,6 +24,7 @@ from neutron_lib.callbacks import exceptions
 from neutron_lib.callbacks import registry
 from neutron_lib.callbacks import resources
 from neutron_lib import constants as n_const
+from neutron_lib.db import api as db_api
 from neutron_lib.db import resource_extend
 from neutron_lib import exceptions as n_exc
 from neutron_lib.exceptions import l3 as l3_exc
@@ -209,7 +210,7 @@ class MidonetL3DBMixin(l3_gwmode_db.L3_NAT_db_mixin):
         with plugin_utils.delete_port_on_error(
                 self._core_plugin, context.elevated(),
                 external_port['id']),\
-                context.session.begin(subtransactions=True):
+                db_api.CONTEXT_WRITER.using(context):
             external_ips = self._port_fixed_ips_for_floatingip(external_port)
             if not external_ips:
                 raise n_exc.ExternalIpAddressExhausted(net_id=f_net_id)

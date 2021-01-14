@@ -15,6 +15,7 @@
 from neutron_lib.api.definitions import port as port_def
 from neutron_lib.api.definitions import portbindings
 from neutron_lib.api import validators
+from neutron_lib.db import api as db_api
 from neutron_lib.db import model_base
 from neutron_lib.db import resource_extend
 from neutron_lib import exceptions as n_exc
@@ -74,7 +75,7 @@ class MidonetPortBindingMixin(object):
                 msg = 'Cannot set binding because the host is not bound'
                 raise n_exc.BadRequest(resource='port', msg=msg)
 
-        with context.session.begin(subtransactions=True):
+        with db_api.CONTEXT_WRITER.using(context):
             bind_port = context.session.query(PortBindingInfo).filter_by(
                 port_id=port_id).first()
             if profile_set:
