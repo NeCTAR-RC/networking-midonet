@@ -14,6 +14,7 @@
 
 from neutron_lib.api.definitions import provider_net as pnet
 from neutron_lib.api import validators
+from neutron_lib.db import api as db_api
 from neutron_lib.db import model_base
 from neutron_lib import exceptions as n_exc
 from oslo_log import log as logging
@@ -74,7 +75,7 @@ class MidonetProviderNetworkMixin(object):
     def _create_provider_network(self, context, network):
         net_type = self._process_provider_create(network)
         if net_type:
-            with context.session.begin(subtransactions=True):
+            with db_api.CONTEXT_WRITER.using(context):
                 context.session.add(NetworkBinding(network_id=network['id'],
                                                    network_type=net_type))
 
