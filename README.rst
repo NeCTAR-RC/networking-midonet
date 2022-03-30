@@ -1,10 +1,25 @@
-This project is no longer maintained.
+========================
+Team and repository tags
+========================
 
-The contents of this repository are still available in the Git
-source code management system.  To see the contents of this
-repository before it reached its end of life, please check out the
-previous commit with "git checkout HEAD^1".
+.. image:: https://governance.openstack.org/tc/badges/networking-midonet.svg
+    :target: https://governance.openstack.org/tc/reference/tags/index.html
+
 
 For any further questions, please email
 openstack-discuss@lists.openstack.org or join #openstack-dev on
 OFTC.
+
+.. Change things from this point on
+
+==================
+networking-midonet
+==================
+
+This is the official Midonet Neutron plugin.
+
+Documentation:
+
+- https://docs.openstack.org/networking-midonet/latest/
+- https://docs.midonet.org/
+
