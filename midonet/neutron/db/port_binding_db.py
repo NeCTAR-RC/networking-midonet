@@ -31,8 +31,6 @@ class PortBindingInfo(model_base.BASEV2):
 
     port_id = sa.Column(sa.String(36),
                         sa.ForeignKey('ports.id'),
-                        sa.ForeignKey('portbindingports.port_id',
-                                      ondelete="CASCADE"),
                         primary_key=True)
     interface_name = sa.Column(sa.String(length=255), nullable=False)
     port = orm.relationship(models_v2.Port,
