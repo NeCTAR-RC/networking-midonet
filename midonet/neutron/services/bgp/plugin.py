@@ -25,7 +25,7 @@ from oslo_utils import excutils
 
 from neutron.api import extensions as neutron_extensions
 from neutron_dynamic_routing import extensions as bgp_extensions
-from neutron_dynamic_routing.extensions import bgp
+from neutron_lib.api.definitions import bgp
 
 from midonet.neutron.client import base as c_base
 from midonet.neutron.common import config  # noqa
@@ -47,7 +47,7 @@ class MidonetBgpPlugin(bgp_db_midonet.MidonetBgpDbMixin,
     This class manages the workflow of Midonet BGP request/response.
     """
 
-    supported_extension_aliases = [bgp.BGP_EXT_ALIAS,
+    supported_extension_aliases = [bgp.ALIAS,
                                    bsri.BGP_ROUTER_EXT_ALIAS]
 
     def __init__(self):
@@ -61,7 +61,7 @@ class MidonetBgpPlugin(bgp_db_midonet.MidonetBgpDbMixin,
 
     @classmethod
     def get_plugin_type(cls):
-        return bgp.BGP_EXT_ALIAS
+        return bgp.ALIAS
 
     def get_plugin_description(self):
         """returns string description of the plugin."""
