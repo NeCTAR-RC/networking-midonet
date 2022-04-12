@@ -563,7 +563,7 @@ class TestMidonetPortBinding(MidonetPluginML2TestCase,
             result = self.deserialize(self.fmt, res)
             self.assertDictSupersetOf({
                 portbindings.PROFILE: {'foo': ''},
-                portbindings.VIF_TYPE: m_const.VIF_TYPE_MIDONET,
+                portbindings.VIF_TYPE: 'binding_failed',
             }, result['port'])
 
     def test_create_mido_portbinding_bad_interface(self):
@@ -581,7 +581,7 @@ class TestMidonetPortBinding(MidonetPluginML2TestCase,
             result = self.deserialize(self.fmt, res)
             self.assertDictSupersetOf({
                 portbindings.PROFILE: {'interface_name': ''},
-                portbindings.VIF_TYPE: m_const.VIF_TYPE_MIDONET,
+                portbindings.VIF_TYPE: 'binding_failed',
             }, result['port'])
 
     def test_update_mido_portbinding(self):
