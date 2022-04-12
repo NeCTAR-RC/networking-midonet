@@ -22,6 +22,7 @@ from neutron.tests.unit.api import test_extensions as test_ex
 from neutron.tests.unit.extensions import test_extraroute
 from neutron.tests.unit.extensions import test_l3
 from neutron_dynamic_routing.extensions import bgp
+from neutron_lib.api.definitions import bgp as bgp_def
 
 from midonet.neutron.common import constants as m_const
 from midonet.neutron import extensions as midoextensions
@@ -56,7 +57,7 @@ class BgpTestExtensionManager(
 
     def get_resources(self):
         res = super(BgpTestExtensionManager, self).get_resources()
-        bgp.RESOURCE_ATTRIBUTE_MAP['bgp-speakers'].update(
+        bgp_def.RESOURCE_ATTRIBUTE_MAP['bgp-speakers'].update(
             bsri.EXTENDED_ATTRIBUTES_2_0['bgp-speakers'])
         return res + bgp.Bgp.get_resources()
 
