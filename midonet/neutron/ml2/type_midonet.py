@@ -63,4 +63,4 @@ class MidonetTypeDriver(api.ML2TypeDriver):
         pass
 
     def get_mtu(self, physical):
-        pass
+        return 1500
