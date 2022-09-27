@@ -68,8 +68,9 @@ class MidonetSecurityGroupsHandler(object):
 
     @registry.receives(resources.SECURITY_GROUP_RULE, [events.AFTER_CREATE])
     @log_helpers.log_method_call
-    def create_security_group_rule(self, resource, event, trigger, **kwargs):
-        sgr = kwargs.get('security_group_rule')
+    def create_security_group_rule(self, resource, event, trigger,
+                                   payload=None):
+        (sgr,) = payload.states
         try:
             self.client.create_security_group_rule_postcommit(sgr)
         except Exception as ex:
@@ -86,8 +87,9 @@ class MidonetSecurityGroupsHandler(object):
 
     @registry.receives(resources.SECURITY_GROUP_RULE, [events.AFTER_DELETE])
     @log_helpers.log_method_call
-    def delete_security_group_rule(self, resource, event, trigger, **kwargs):
-        sgr_id = kwargs.get('security_group_rule_id')
+    def delete_security_group_rule(self, resource, event, trigger,
+                                   payload=None):
+        sgr_id = payload.resource_id
         try:
             self.client.delete_security_group_rule_postcommit(sgr_id)
         except Exception as ex:
