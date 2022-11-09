@@ -287,3 +287,14 @@ class MidonetL3ServicePlugin(extraroute_db.ExtraRoute_db_mixin,
         if self._subnet_has_fip(context, router_id, subnet_id):
             raise routerinterfacefip.RouterInterfaceInUseAsGatewayByFloatingIP(
                 router_id=router_id, subnet_id=subnet_id)
+
+    def _add_neutron_router_interface(self, context, router_id,
+                                      interface_info, may_exist=False):
+        """Dummy method that ovn sync calls
+
+        OVN maintenance task tries to sync router interfaces and thinks all
+        routers are ovn so attempts to all this method to fix the interface.
+        In this case it's a midonet router so no need to do anything
+        """
+        LOG.info("Skipping adding interface to midonet router")
+        raise NotImplementedError()
